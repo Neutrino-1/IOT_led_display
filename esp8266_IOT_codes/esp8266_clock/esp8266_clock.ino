@@ -25,7 +25,7 @@ void loop() {
   
     HTTPClient http;  //start a HTTPClinet as http 
     
-    //####DO NOT USE THE SAME API as below
+    //#DO NOT USE THE SAME API-KEY as below
     http.begin("http://api.timezonedb.com/v2.1/get-time-zone?key=********API-KEY*********&format=json&by=zone&zone=Asia/Kolkata");  //Enter your API 
     
     int httpCode = http.GET(); //pass a get request                                                                  
@@ -35,17 +35,19 @@ void loop() {
       //Check the returning code
       
 /*Phrasing Data using the JSON librarey */ //Use https://arduinojson.org/assistant/ to get the phrasing values for your JSON string 
-
+     
+      // Settig the size of the documents size to the reponse JSON
       const size_t capacity =JSON_OBJECT_SIZE(13) + 250;
+     //Creating the JSON document file
       DynamicJsonDocument doc(capacity);
-
-      //const char* json = "{\"status\":\"OK\",\"message\":\"\",\"countryCode\":\"IN\",\"countryName\":\"India\",\"zoneName\":\"Asia/Kolkata\",\"abbreviation\":\"IST\",\"gmtOffset\":19800,\"dst\":\"0\",\"zoneStart\":-764145000,\"zoneEnd\":null,\"nextAbbreviation\":null,\"timestamp\":1563199871,\"formatted\":\"2019-07-15 14:11:11\"}";
-
+      
+      //Get the JSON data and store it in doc
       deserializeJson(doc,http.getString());
       
-      String currentDateTime = doc["formatted"]; // "2019-07-03T12:07Z"
+      // Extracting the required data using the right key
+      String currentDateTime = doc["formatted"]; // String content example"2019-07-03T12:07Z"
 
-      //conversion
+      //conversion, just taking the time part
       String local_time =  currentDateTime.substring(11,16);    
     if(!currentTime.equals(local_time))
     {
